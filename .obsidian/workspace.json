@@ -1,0 +1,222 @@
+{
+  "main": {
+    "id": "9bd882798e700dcd",
+    "type": "split",
+    "children": [
+      {
+        "id": "1e47078d1684bc2c",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "64c6ad65239a42b4",
+            "type": "leaf",
+            "state": {
+              "type": "graph",
+              "state": {},
+              "icon": "lucide-git-fork",
+              "title": "Граф"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "8cd1c54bcba265d6",
+    "type": "split",
+    "children": [
+      {
+        "id": "33e1ed487a7ab99c",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "0e44b69255d36b1a",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Файловый менеджер"
+            }
+          },
+          {
+            "id": "8cc99003175fc5ea",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Поиск"
+            }
+          },
+          {
+            "id": "2bbbf98b55543526",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Закладки"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "16dbdbe895af3ec9",
+    "type": "split",
+    "children": [
+      {
+        "id": "c6367cb365410a9f",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "63fc1bc53a45682e",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "IMPLEMENTATION_STATUS.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Обратные ссылки для IMPLEMENTATION_STATUS"
+            }
+          },
+          {
+            "id": "1b040c87d54d245b",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "IMPLEMENTATION_STATUS.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Исходящие ссылки из IMPLEMENTATION_STATUS"
+            }
+          },
+          {
+            "id": "aff0f91d3a309150",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Теги"
+            }
+          },
+          {
+            "id": "39364f50430ec6ec",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "Все свойства"
+            }
+          },
+          {
+            "id": "18c93180536b5b8e",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "IMPLEMENTATION_STATUS.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Структура IMPLEMENTATION_STATUS"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Меню быстрого перехода": false,
+      "graph:Граф": false,
+      "canvas:Создать новый холст": false,
+      "daily-notes:Сегодняшняя заметка": false,
+      "templates:Вставить шаблон": false,
+      "command-palette:Открыть палитру команд": false,
+      "bases:Создать новую базу": false
+    }
+  },
+  "active": "64c6ad65239a42b4",
+  "lastOpenFiles": [
+    "esp32_firmware/wifi_config.example.h",
+    "esp32_firmware/camera_only_collection/camera_only_collection.ino",
+    "esp32_firmware/collector_test/collector_test.ino",
+    "esp32_firmware/camera_only_collection",
+    "esp32_firmware/collector_test",
+    "Без названия.canvas",
+    "IMPLEMENTATION_STATUS.md",
+    "docs/wiki/raw/old_ai_skills/08_demo_grant.md",
+    "docs/wiki/raw/old_ai_skills/07_testing_and_logs.md",
+    "docs/wiki/raw/old_ai_skills/06_autonomous_mode.md",
+    "docs/wiki/raw/old_ai_skills/05_flutter_app.md",
+    "docs/wiki/raw/old_ai_skills/04_esp32_safety.md",
+    "docs/wiki/raw/old_ai_skills/03_uwb_two_anchor_diagonal.md",
+    "docs/wiki/raw/old_ai_skills/02_geometry_and_calibration.md",
+    "docs/wiki/raw/old_ai_skills/01_project_overview.md",
+    "docs/wiki/compiled/PROJECT_INDEX.md",
+    "docs/ai_skills/code-review-checklist/SKILL.md",
+    "docs/ai_skills/grant-investor-positioning/SKILL.md",
+    "docs/ai_skills/demo-mode/SKILL.md",
+    "docs/ai_skills/testing-and-logs/SKILL.md",
+    "docs/ai_skills/ball-collection-mechanics/SKILL.md",
+    "docs/ai_skills/autonomous-mode/SKILL.md",
+    "docs/ai_skills/raspberry-pi-vision/SKILL.md",
+    "docs/ai_skills/app-robot-protocol/SKILL.md",
+    "docs/ai_skills/flutter-app/SKILL.md",
+    "docs/ai_skills/esp32-safety/SKILL.md",
+    "docs/ai_skills/esp32-firmware/SKILL.md",
+    "docs/ai_skills/uwb-two-anchor-diagonal/SKILL.md",
+    "docs/ai_skills/geometry-and-calibration/SKILL.md",
+    "docs/ai_skills/memory-maintenance/SKILL.md",
+    "docs/ai_skills/project-overview/SKILL.md",
+    "docs/wiki/raw/old_ai_skills",
+    "docs/ai_skills/code-review-checklist",
+    "docs/ai_skills/grant-investor-positioning",
+    "docs/ai_skills/demo-mode",
+    "docs/ai_skills/testing-and-logs",
+    "docs/ai_skills/ball-collection-mechanics"
+  ]
+}

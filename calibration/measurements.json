@@ -1,0 +1,624 @@
+{
+  "anchors": {
+    "L": {
+      "x": 0.0,
+      "y": 1.5
+    },
+    "R": {
+      "x": 3.0,
+      "y": 1.5
+    }
+  },
+  "room": {
+    "w": 3.0,
+    "h": 3.0
+  },
+  "points": [
+    {
+      "ref_x": 0.5,
+      "ref_y": 0.5,
+      "pos_x": 0.963,
+      "pos_y": 1.5,
+      "range_l": 0.66,
+      "range_r": 1.9,
+      "n_samples": 15,
+      "raw": [
+        {
+          "pos_x": 0.992,
+          "pos_y": 1.5,
+          "range_l": 0.58,
+          "range_r": 1.84
+        },
+        {
+          "pos_x": 0.93,
+          "pos_y": 1.5,
+          "range_l": 0.65,
+          "range_r": 1.96
+        },
+        {
+          "pos_x": 0.964,
+          "pos_y": 1.5,
+          "range_l": 0.63,
+          "range_r": 1.9
+        },
+        {
+          "pos_x": 0.939,
+          "pos_y": 1.5,
+          "range_l": 0.66,
+          "range_r": 1.95
+        },
+        {
+          "pos_x": 1.028,
+          "pos_y": 1.5,
+          "range_l": 0.72,
+          "range_r": 1.83
+        },
+        {
+          "pos_x": 0.895,
+          "pos_y": 1.5,
+          "range_l": 0.73,
+          "range_r": 2.04
+        },
+        {
+          "pos_x": 0.963,
+          "pos_y": 1.5,
+          "range_l": 0.76,
+          "range_r": 1.95
+        },
+        {
+          "pos_x": 0.962,
+          "pos_y": 1.5,
+          "range_l": 0.65,
+          "range_r": 1.91
+        },
+        {
+          "pos_x": 0.99,
+          "pos_y": 1.5,
+          "range_l": 0.66,
+          "range_r": 1.87
+        },
+        {
+          "pos_x": 0.891,
+          "pos_y": 1.5,
+          "range_l": -121.34,
+          "range_r": 1.74
+        },
+        {
+          "pos_x": 1.04,
+          "pos_y": 1.5,
+          "range_l": 0.72,
+          "range_r": 1.81
+        },
+        {
+          "pos_x": 0.925,
+          "pos_y": 1.5,
+          "range_l": 0.74,
+          "range_r": 2.0
+        },
+        {
+          "pos_x": 0.931,
+          "pos_y": 1.5,
+          "range_l": 0.71,
+          "range_r": 1.98
+        },
+        {
+          "pos_x": 0.997,
+          "pos_y": 1.5,
+          "range_l": 0.72,
+          "range_r": 1.88
+        },
+        {
+          "pos_x": 0.977,
+          "pos_y": 1.5,
+          "range_l": 0.63,
+          "range_r": 1.88
+        }
+      ]
+    },
+    {
+      "ref_x": 1.5,
+      "ref_y": 0.5,
+      "pos_x": 1.774,
+      "pos_y": 1.5,
+      "range_l": 1.53,
+      "range_r": 0.79,
+      "n_samples": 15,
+      "raw": [
+        {
+          "pos_x": 1.793,
+          "pos_y": 1.5,
+          "range_l": 1.57,
+          "range_r": 0.84
+        },
+        {
+          "pos_x": 1.715,
+          "pos_y": 1.5,
+          "range_l": 1.4,
+          "range_r": 0.82
+        },
+        {
+          "pos_x": 1.811,
+          "pos_y": 1.5,
+          "range_l": 1.53,
+          "range_r": 0.69
+        },
+        {
+          "pos_x": 1.856,
+          "pos_y": 1.5,
+          "range_l": 1.63,
+          "range_r": 0.72
+        },
+        {
+          "pos_x": 1.799,
+          "pos_y": 1.5,
+          "range_l": 1.53,
+          "range_r": 0.74
+        },
+        {
+          "pos_x": 1.774,
+          "pos_y": 1.5,
+          "range_l": -133.44,
+          "range_r": 0.86
+        },
+        {
+          "pos_x": 1.715,
+          "pos_y": 1.5,
+          "range_l": 1.39,
+          "range_r": 0.8
+        },
+        {
+          "pos_x": 1.771,
+          "pos_y": 1.5,
+          "range_l": 1.5,
+          "range_r": 0.79
+        },
+        {
+          "pos_x": 1.761,
+          "pos_y": 1.5,
+          "range_l": 1.48,
+          "range_r": 0.79
+        },
+        {
+          "pos_x": 1.74,
+          "pos_y": 1.5,
+          "range_l": 1.41,
+          "range_r": 0.74
+        },
+        {
+          "pos_x": 1.799,
+          "pos_y": 1.5,
+          "range_l": 1.53,
+          "range_r": 0.74
+        },
+        {
+          "pos_x": 1.755,
+          "pos_y": 1.5,
+          "range_l": 1.56,
+          "range_r": 0.95
+        },
+        {
+          "pos_x": 1.885,
+          "pos_y": 1.5,
+          "range_l": 1.65,
+          "range_r": 0.64
+        },
+        {
+          "pos_x": 1.766,
+          "pos_y": 1.5,
+          "range_l": 1.5,
+          "range_r": 0.81
+        },
+        {
+          "pos_x": 1.786,
+          "pos_y": 1.5,
+          "range_l": 1.59,
+          "range_r": 0.9
+        }
+      ]
+    },
+    {
+      "ref_x": 2.5,
+      "ref_y": 0.5,
+      "pos_x": 2.807,
+      "pos_y": 1.5,
+      "range_l": 2.71,
+      "range_r": -0.11,
+      "n_samples": 15,
+      "raw": [
+        {
+          "pos_x": 2.807,
+          "pos_y": 1.5,
+          "range_l": 2.78,
+          "range_r": -0.09
+        },
+        {
+          "pos_x": 2.807,
+          "pos_y": 1.5,
+          "range_l": 65.93,
+          "range_r": -0.2
+        },
+        {
+          "pos_x": 2.807,
+          "pos_y": 1.5,
+          "range_l": 2.59,
+          "range_r": -0.12
+        },
+        {
+          "pos_x": 2.807,
+          "pos_y": 1.5,
+          "range_l": 2.82,
+          "range_r": -0.12
+        },
+        {
+          "pos_x": 2.807,
+          "pos_y": 1.5,
+          "range_l": 2.64,
+          "range_r": -0.1
+        },
+        {
+          "pos_x": 2.807,
+          "pos_y": 1.5,
+          "range_l": 2.2,
+          "range_r": -0.18
+        },
+        {
+          "pos_x": 2.807,
+          "pos_y": 1.5,
+          "range_l": 3.06,
+          "range_r": -0.09
+        },
+        {
+          "pos_x": 2.807,
+          "pos_y": 1.5,
+          "range_l": 2.71,
+          "range_r": -0.08
+        },
+        {
+          "pos_x": 2.807,
+          "pos_y": 1.5,
+          "range_l": 2.5,
+          "range_r": -0.14
+        },
+        {
+          "pos_x": 2.807,
+          "pos_y": 1.5,
+          "range_l": 2.74,
+          "range_r": -0.11
+        },
+        {
+          "pos_x": 2.807,
+          "pos_y": 1.5,
+          "range_l": 2.55,
+          "range_r": -0.11
+        },
+        {
+          "pos_x": 2.807,
+          "pos_y": 1.5,
+          "range_l": 2.58,
+          "range_r": -0.13
+        },
+        {
+          "pos_x": 2.723,
+          "pos_y": 1.5,
+          "range_l": 2.71,
+          "range_r": 0.08
+        },
+        {
+          "pos_x": 2.32,
+          "pos_y": 1.5,
+          "range_l": 2.89,
+          "range_r": -0.03
+        },
+        {
+          "pos_x": 2.32,
+          "pos_y": 1.5,
+          "range_l": 2.51,
+          "range_r": -0.09
+        }
+      ]
+    },
+    {
+      "ref_x": 0.5,
+      "ref_y": 2.5,
+      "pos_x": 0.87,
+      "pos_y": 1.5,
+      "range_l": 0.75,
+      "range_r": 2.08,
+      "n_samples": 15,
+      "raw": [
+        {
+          "pos_x": 4.0,
+          "pos_y": 1.5,
+          "range_l": 159.45,
+          "range_r": 2.08
+        },
+        {
+          "pos_x": 0.893,
+          "pos_y": 1.5,
+          "range_l": 0.66,
+          "range_r": 2.02
+        },
+        {
+          "pos_x": 0.87,
+          "pos_y": 1.5,
+          "range_l": 0.65,
+          "range_r": 2.05
+        },
+        {
+          "pos_x": 1.017,
+          "pos_y": 1.5,
+          "range_l": 0.97,
+          "range_r": 1.96
+        },
+        {
+          "pos_x": 0.864,
+          "pos_y": 1.5,
+          "range_l": 0.77,
+          "range_r": 2.1
+        },
+        {
+          "pos_x": 0.835,
+          "pos_y": 1.5,
+          "range_l": 0.71,
+          "range_r": 2.12
+        },
+        {
+          "pos_x": 0.87,
+          "pos_y": 1.5,
+          "range_l": 0.71,
+          "range_r": 2.07
+        },
+        {
+          "pos_x": 0.89,
+          "pos_y": 1.5,
+          "range_l": 0.79,
+          "range_r": 2.07
+        },
+        {
+          "pos_x": 0.832,
+          "pos_y": 1.5,
+          "range_l": 0.81,
+          "range_r": 2.16
+        },
+        {
+          "pos_x": 0.968,
+          "pos_y": 1.5,
+          "range_l": 0.52,
+          "range_r": 1.86
+        },
+        {
+          "pos_x": 0.845,
+          "pos_y": 1.5,
+          "range_l": 0.75,
+          "range_r": 2.12
+        },
+        {
+          "pos_x": 0.843,
+          "pos_y": 1.5,
+          "range_l": 0.77,
+          "range_r": 2.13
+        },
+        {
+          "pos_x": 0.854,
+          "pos_y": 1.5,
+          "range_l": 0.73,
+          "range_r": 2.1
+        },
+        {
+          "pos_x": 0.918,
+          "pos_y": 1.5,
+          "range_l": 0.74,
+          "range_r": 2.01
+        },
+        {
+          "pos_x": 0.829,
+          "pos_y": 1.5,
+          "range_l": 0.8,
+          "range_r": 2.16
+        }
+      ]
+    },
+    {
+      "ref_x": 1.5,
+      "ref_y": 2.5,
+      "pos_x": 2.03,
+      "pos_y": 1.5,
+      "range_l": 1.97,
+      "range_r": 0.82,
+      "n_samples": 15,
+      "raw": [
+        {
+          "pos_x": 2.086,
+          "pos_y": 1.5,
+          "range_l": 2.02,
+          "range_r": 0.75
+        },
+        {
+          "pos_x": 1.977,
+          "pos_y": 1.5,
+          "range_l": 1.96,
+          "range_r": 0.99
+        },
+        {
+          "pos_x": 1.869,
+          "pos_y": 2.121,
+          "range_l": 1.97,
+          "range_r": 1.29
+        },
+        {
+          "pos_x": 2.198,
+          "pos_y": 1.811,
+          "range_l": 2.22,
+          "range_r": 0.86
+        },
+        {
+          "pos_x": 2.271,
+          "pos_y": 1.975,
+          "range_l": 2.32,
+          "range_r": 0.87
+        },
+        {
+          "pos_x": 2.183,
+          "pos_y": 1.5,
+          "range_l": 2.18,
+          "range_r": 0.81
+        },
+        {
+          "pos_x": 1.781,
+          "pos_y": 1.5,
+          "range_l": 1.52,
+          "range_r": 0.79
+        },
+        {
+          "pos_x": 2.069,
+          "pos_y": 1.5,
+          "range_l": 2.03,
+          "range_r": 0.84
+        },
+        {
+          "pos_x": 1.99,
+          "pos_y": 1.5,
+          "range_l": 1.9,
+          "range_r": 0.82
+        },
+        {
+          "pos_x": 1.884,
+          "pos_y": 1.5,
+          "range_l": 1.72,
+          "range_r": 0.81
+        },
+        {
+          "pos_x": 2.143,
+          "pos_y": 1.774,
+          "range_l": 2.16,
+          "range_r": 0.9
+        },
+        {
+          "pos_x": 1.873,
+          "pos_y": 1.5,
+          "range_l": -238.38,
+          "range_r": 0.86
+        },
+        {
+          "pos_x": 2.03,
+          "pos_y": 1.5,
+          "range_l": 1.95,
+          "range_r": 0.79
+        },
+        {
+          "pos_x": 1.976,
+          "pos_y": 1.5,
+          "range_l": 1.87,
+          "range_r": 0.8
+        },
+        {
+          "pos_x": 2.367,
+          "pos_y": 1.955,
+          "range_l": 2.41,
+          "range_r": 0.78
+        }
+      ]
+    },
+    {
+      "ref_x": 2.5,
+      "ref_y": 2.5,
+      "pos_x": 2.661,
+      "pos_y": 1.5,
+      "range_l": 2.65,
+      "range_r": 0.02,
+      "n_samples": 15,
+      "raw": [
+        {
+          "pos_x": 2.717,
+          "pos_y": 1.5,
+          "range_l": 2.71,
+          "range_r": -0.02
+        },
+        {
+          "pos_x": 2.663,
+          "pos_y": 1.5,
+          "range_l": 2.65,
+          "range_r": 0.21
+        },
+        {
+          "pos_x": 2.844,
+          "pos_y": 1.5,
+          "range_l": 2.84,
+          "range_r": -0.06
+        },
+        {
+          "pos_x": 2.618,
+          "pos_y": 1.5,
+          "range_l": 2.59,
+          "range_r": 0.03
+        },
+        {
+          "pos_x": 2.679,
+          "pos_y": 1.5,
+          "range_l": 2.66,
+          "range_r": 0.02
+        },
+        {
+          "pos_x": 2.53,
+          "pos_y": 1.5,
+          "range_l": 2.49,
+          "range_r": 0.14
+        },
+        {
+          "pos_x": 2.484,
+          "pos_y": 1.5,
+          "range_l": 2.43,
+          "range_r": -0.11
+        },
+        {
+          "pos_x": 2.751,
+          "pos_y": 1.5,
+          "range_l": 2.74,
+          "range_r": 0.06
+        },
+        {
+          "pos_x": 4.0,
+          "pos_y": 1.5,
+          "range_l": 2.66,
+          "range_r": -0.05
+        },
+        {
+          "pos_x": 2.67,
+          "pos_y": 1.5,
+          "range_l": 2.65,
+          "range_r": 0.05
+        },
+        {
+          "pos_x": 2.546,
+          "pos_y": 1.5,
+          "range_l": 2.49,
+          "range_r": -0.05
+        },
+        {
+          "pos_x": 2.633,
+          "pos_y": 1.5,
+          "range_l": 2.61,
+          "range_r": -0.07
+        },
+        {
+          "pos_x": 2.661,
+          "pos_y": 1.5,
+          "range_l": 2.64,
+          "range_r": 0.08
+        },
+        {
+          "pos_x": 2.591,
+          "pos_y": 1.5,
+          "range_l": 2.68,
+          "range_r": -0.01
+        },
+        {
+          "pos_x": 2.601,
+          "pos_y": 1.5,
+          "range_l": 2.57,
+          "range_r": 0.02
+        }
+      ]
+    }
+  ]
+}

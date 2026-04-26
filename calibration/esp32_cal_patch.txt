@@ -1,0 +1,51 @@
+Патч больше не нужен вручную применять — всё уже добавлено в прошивки.
+
+═══════════════════════════════════════════════════════════════
+  Что уже добавлено в прошивки:
+═══════════════════════════════════════════════════════════════
+
+1. ANTENNA_DELAY = 16436  — во всех трёх прошивках:
+   - esp32_firmware/tennis_robot/tennis_robot.ino
+   - esp32_firmware/anchor_L/anchor_L.ino
+   - esp32_firmware/anchor_R/anchor_R.ino
+
+2. DW1000.setAntennaDelay(ANTENNA_DELAY) — в setup() каждой из них
+
+3. Команды CAL_RAW / CAL_STOP — в tennis_robot.ino
+   Ответ ESP32: "CAL_MODE,ON"
+   После — шлёт: "RANGE,L,2.341" и "RANGE,R,3.127"
+
+4. tennis_robot_cal — отдельная прошивка для калибровки в комнате:
+   - Комната 5×4 м (вместо корта 23×11 м)
+   - CAL_RAW включён всегда
+   - Нет ховерборда, коллектора, MPU-6050
+
+═══════════════════════════════════════════════════════════════
+  Порядок загрузки прошивок для калибровки
+═══════════════════════════════════════════════════════════════
+
+Маяк L (подключи через USB, запомни COM-порт):
+  ./arduino-cli-bin/arduino-cli.exe compile --fqbn esp32:esp32:esp32 esp32_firmware/anchor_L/
+  ./arduino-cli-bin/arduino-cli.exe upload -p COMX --fqbn esp32:esp32:esp32 esp32_firmware/anchor_L/
+
+Маяк R:
+  ./arduino-cli-bin/arduino-cli.exe compile --fqbn esp32:esp32:esp32 esp32_firmware/anchor_R/
+  ./arduino-cli-bin/arduino-cli.exe upload -p COMX --fqbn esp32:esp32:esp32 esp32_firmware/anchor_R/
+
+Робот (калибровочная прошивка):
+  ./arduino-cli-bin/arduino-cli.exe compile --fqbn esp32:esp32:esp32 esp32_firmware/tennis_robot_cal/
+  ./arduino-cli-bin/arduino-cli.exe upload -p COMX --fqbn esp32:esp32:esp32 esp32_firmware/tennis_robot_cal/
+
+═══════════════════════════════════════════════════════════════
+  После analyze.py — что менять
+═══════════════════════════════════════════════════════════════
+
+В КАЖДОМ из трёх файлов (.ino) замени:
+  #define ANTENNA_DELAY 16436
+на полученное значение, например:
+  #define ANTENNA_DELAY 16389
+
+Потом перекомпилируй и загрузи все три ESP32.
+Повтори measure.py + analyze.py для проверки.
+
+Если ошибка позиции ещё большая — перечитай README.md раздел "Примечания".
