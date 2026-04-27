@@ -538,6 +538,26 @@ class _CourtZonesScreenState extends ConsumerState<CourtZonesScreen> {
     }
   }
 
+  void _startDemoMode(WifiConnectionNotifier wifiConnection) {
+    final centers = _selectedZoneIds
+        .where(_zoneCenters.containsKey)
+        .map((id) => _zoneCenters[id]!)
+        .where((c) => c.x >= 0 && c.x <= _workL && c.y >= 0 && c.y <= _workW)
+        .toList();
+
+    if (centers.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(_tr('Выберите одну зону для DEMO', 'Select one zone for DEMO'))),
+      );
+      return;
+    }
+
+    setState(() => _speedMode = 0);
+    wifiConnection.sendRaw('SET_SPEED:0');
+    wifiConnection.sendZones([centers.first]);
+    wifiConnection.sendRaw('DEMO_START');
+  }
+
   void _showHelpDialog() {
     showModalBottomSheet(
       context: context,
@@ -1578,6 +1598,24 @@ class _CourtZonesScreenState extends ConsumerState<CourtZonesScreen> {
                             ),
                           ],
                         ),
+                        const SizedBox(height: 10),
+                        SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton.icon(
+                            onPressed: (wifiState.isConnected && !isAutoMode)
+                                ? () => _startDemoMode(wifiConnection)
+                                : null,
+                            icon: const Icon(Icons.sports_tennis, size: 20),
+                            label: const Text('DEMO: 1 zone / slow'),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xFF2E7D32),
+                              foregroundColor: Colors.white,
+                              disabledBackgroundColor: Colors.grey[800],
+                              padding: const EdgeInsets.symmetric(vertical: 14),
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                     const Spacer(),
@@ -2424,10 +2462,15 @@ class _CourtZonesScreenState extends ConsumerState<CourtZonesScreen> {
                 children: [
                   _devBtn('Р РµРєРѕРЅРЅРµРєС‚', () { wifiConnection.disconnect(); Future.delayed(const Duration(milliseconds: 500), wifiConnection.connect); }),
                   _devBtn('AUTO_START', () => wifiConnection.sendRaw('AUTO_START')),
+                  _devBtn('DEMO_START', () => wifiConnection.sendRaw('DEMO_START')),
                   _devBtn('AUTO_STOP', () => wifiConnection.sendRaw('AUTO_STOP')),
                   _devBtn('CALIBRATE (РєР°СЂС‚Р°)', _sendCalibration),
                   _devBtn('CAL_RAW РІРєР»', () => wifiConnection.sendRaw('CAL_RAW')),
                   _devBtn('CAL_RAW РІС‹РєР»', () => wifiConnection.sendRaw('CAL_STOP')),
+                  _devBtn('TEST UWB_LOST', () => wifiConnection.sendRaw('TEST_STOP:UWB_LOST')),
+                  _devBtn('TEST UWB_STALE', () => wifiConnection.sendRaw('TEST_STOP:UWB_STALE')),
+                  _devBtn('TEST OUT_BOUNDS', () => wifiConnection.sendRaw('TEST_STOP:OUT_OF_BOUNDS')),
+                  _devBtn('TEST PI_TIMEOUT', () => wifiConnection.sendRaw('TEST_STOP:PI_TIMEOUT')),
                   _devBtn('RESET', () => wifiConnection.sendRaw('RESET')),
                   _devBtn('ATTACH ON', () => wifiConnection.sendAttachment(true)),
                   _devBtn('ATTACH OFF', () => wifiConnection.sendAttachment(false)),

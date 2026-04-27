@@ -72,6 +72,10 @@ Core architecture to preserve:
 - Cleaned Flutter analyzer issues in `court_painter.dart` and `court_zones_screen.dart`; `flutter analyze lib` now reports no issues.
 - Added non-driving ESP32 bench safety injection commands: `TEST_STOP:UWB_LOST`, `TEST_STOP:UWB_STALE`, `TEST_STOP:UWB_BRANCH`, `TEST_STOP:OUT_OF_BOUNDS`, and `TEST_STOP:PI_TIMEOUT`.
 - Documented safety injection commands in `docs/ai_skills/esp32-safety/SKILL.md`.
+- Added conservative one-zone `DEMO_START` mode in ESP32 firmware. It requires exactly one zone, forces low speed, and stops after one sweep/collection or demo timeout.
+- Added an app button `DEMO: 1 zone / slow` that sends only the first selected zone, forces `SET_SPEED:0`, and starts `DEMO_START`.
+- Added developer quick commands for `DEMO_START` and bench safety injections.
+- Added Russian operator runbook: `docs/OPERATOR_RUNBOOK_RU.md`.
 
 ## Current Verification Status
 
@@ -86,7 +90,7 @@ Recovered items:
 - `flutter pub get` completed.
 - `flutter analyze lib` completed with no issues.
 - ESP32 firmware variants listed above compile.
-- Full ESP32 firmware compiles after adding bench safety injection commands.
+- Full ESP32 firmware compiles after adding bench safety injection and one-zone demo commands.
 
 Remaining issues:
 
@@ -103,9 +107,10 @@ Reason:
 
 Concrete next tasks:
 
-1. Add one-zone conservative demo/test mode or confirm existing AUTO can be constrained from the app.
-2. Run staged non-moving safety injection tests before any real movement.
-3. Log all physical/integration test results in `TEST_LOG.md`.
+1. Run staged non-moving safety injection tests before any real movement.
+2. Run manual-control and UWB calibration tests.
+3. Run the first one-zone `DEMO_START` test only after manual/UWB/safety/camera checks.
+4. Log all physical/integration test results in `TEST_LOG.md`.
 
 ## How Phase 1 Should Be Implemented
 

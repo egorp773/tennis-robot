@@ -31,6 +31,13 @@ Show a reliable, safe, repeatable prototype scenario. Do not try to prove full p
 - Physical emergency stop available.
 - Safe stop on any localization or Pi issue.
 
+## Current Commands
+
+- App normal AUTO: sends selected zones, then `AUTO_START`.
+- App conservative demo: sends the first selected zone only, forces `SET_SPEED:0`, then sends `DEMO_START`.
+- ESP32 `DEMO_START` requires exactly one zone and valid calibration/heading/UWB pose.
+- Demo mode stops with `DEMO_DONE` after one sweep/collection or with a clear error such as `ERROR,DEMO_TIMEOUT` / `ERROR,DEMO_NAV_TIMEOUT`.
+
 ## Demo Acceptance
 
 Demo is acceptable when:

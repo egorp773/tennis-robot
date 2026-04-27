@@ -48,6 +48,13 @@ Demo mode should be more conservative than normal AUTO:
 - Timeout on every stage.
 - Stop near ball or after detection, not necessarily full collection.
 
+Current implementation:
+
+- `DEMO_START` is separate from `AUTO_START`.
+- It is valid only with one selected zone.
+- It forces low navigation speed.
+- It stops after one zone sweep/collection or on demo timeout.
+
 ## Deferred
 
 Defer these until navigation is stable:

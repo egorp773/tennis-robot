@@ -113,6 +113,8 @@
 #define PI_UART_TIMEOUT_MS  5000UL   // Pi silence in AUTO в†’ warn/stop
 #define NAV_STUCK_MS        60000UL  // navigating to same target > 60s в†’ skip
 #define NAV_STUCK_RETURN_MS 120000UL // returning > 120s в†’ emergency stop
+#define DEMO_TOTAL_TIMEOUT_MS 45000UL
+#define DEMO_NAV_TIMEOUT_MS   25000UL
 #define CAL_MISMATCH_M      1.0f
 #define MAX_UWB_JUMP_M      1.5f
 #define MAX_UWB_REJECTS     4
@@ -160,6 +162,7 @@ bool trilaterateCandidates(float rL, float rR, Point2f &a, Point2f &b);
 bool acceptPose(Point2f p, unsigned long now);
 void reportModeToPi(AutoSub sub);
 void seedSafetyTestAutoState();
+bool startAutoFromZones(bool requestDemoMode);
 
 MainState mainState = ST_MANUAL;
 AutoSub   autoSub   = AS_SEARCH;
@@ -198,6 +201,8 @@ unsigned long navStartMs     = 0;     // when current navigation leg started
 unsigned long lastBallsSend  = 0;     // for periodic ball count send
 int16_t       navSpeed       = NAV_SPEED;       // adjustable via SET_SPEED
 int16_t       navSpeedSlow   = NAV_SPEED_SLOW;  // adjustable via SET_SPEED
+bool          demoMode       = false;
+unsigned long demoStartMs    = 0;
 
 // в”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђ SWEEP в”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђ
 Point2f       sweepPts[MAX_SWEEP_PTS];
@@ -415,6 +420,8 @@ bool hasFreshUwb(unsigned long now) {
 void safetyStop(const char *reason, bool invalidatePose) {
   hoverStop();
   mainState = ST_MANUAL;
+  demoMode = false;
+  demoStartMs = 0;
   wsSend(String("ERROR,") + reason);
   wsSend("STATE,MANUAL");
   Serial.printf("[SAFE] STOP: %s\n", reason);
@@ -444,6 +451,58 @@ void seedSafetyTestAutoState() {
   zoneCount = 0;
   sweepSpinning = false;
   wsSend("TEST,AUTO_STATE_SEEDED");
+}
+
+bool startAutoFromZones(bool requestDemoMode) {
+  if (!calibrated) {
+    wsSend("ERROR,NOT_CALIBRATED");
+    return false;
+  }
+  if (!headingValid) {
+    wsSend("ERROR,HEADING_INVALID");
+    return false;
+  }
+  if (!hasFreshUwb(millis()) || !haveAcceptedPose) {
+    wsSend("ERROR,UWB_STALE");
+    return false;
+  }
+  if (!isInsideWork(uwbX, uwbY)) {
+    wsSend("ERROR,OUT_OF_BOUNDS");
+    return false;
+  }
+  if (zoneCount == 0) {
+    wsSend("ERROR,NO_ZONES");
+    return false;
+  }
+  if (requestDemoMode && zoneCount != 1) {
+    wsSend("ERROR,DEMO_REQUIRES_ONE_ZONE");
+    return false;
+  }
+
+  int startZone = nearestZone();
+  if (!isInsideWork(zones[startZone].cx, zones[startZone].cy)) {
+    wsSend("ERROR,TARGET_OUT_OF_BOUNDS");
+    return false;
+  }
+  if (batPercent < 20) {
+    wsSend(String("WARN,LOW_BATTERY,") + String(batPercent));
+  }
+
+  demoMode = requestDemoMode;
+  demoStartMs = demoMode ? millis() : 0;
+  if (demoMode) {
+    navSpeed = 30;
+    navSpeedSlow = 20;
+  }
+
+  mainState = ST_AUTO;
+  currentZoneIdx = startZone;
+  lastPiMsgMs = millis();
+  lastReportedSub = AS_COLLECTING; // force MODE:SEARCH report
+  enterSearch();
+  wsSend(demoMode ? "STATE,DEMO" : "STATE,AUTO");
+  PiSerial.println("MODE:SEARCH");
+  return true;
 }
 
 // Returns the two possible intersections from ranges to diagonal working-area anchors.
@@ -631,46 +690,17 @@ void handlePhone(const String &raw) {
   }
 
   if (cmd == "AUTO_START") {
-    if (!calibrated) {
-      wsSend("ERROR,NOT_CALIBRATED");
-      return;
-    }
-    if (!headingValid) {
-      wsSend("ERROR,HEADING_INVALID");
-      return;
-    }
-    if (!hasFreshUwb(millis()) || !haveAcceptedPose) {
-      wsSend("ERROR,UWB_STALE");
-      return;
-    }
-    if (!isInsideWork(uwbX, uwbY)) {
-      wsSend("ERROR,OUT_OF_BOUNDS");
-      return;
-    }
-    if (zoneCount == 0) {
-      wsSend("ERROR,NO_ZONES");
-      return;
-    }
-    int startZone = nearestZone();
-    if (!isInsideWork(zones[startZone].cx, zones[startZone].cy)) {
-      wsSend("ERROR,TARGET_OUT_OF_BOUNDS");
-      return;
-    }
-    if (batPercent < 20) {
-      wsSend(String("WARN,LOW_BATTERY,") + String(batPercent));
-      // Don't block вЂ” just warn, still start
-    }
-    mainState      = ST_AUTO;
-    currentZoneIdx = startZone;
-    lastPiMsgMs = millis();
-    lastReportedSub = AS_COLLECTING; // С„РѕСЂСЃРёСЂСѓРµРј РѕС‚РїСЂР°РІРєСѓ MODE:SEARCH
-    enterSearch();
-    wsSend("STATE,AUTO");
-    PiSerial.println("MODE:SEARCH");
+    startAutoFromZones(false);
+    return;
+  }
+  if (cmd == "DEMO_START") {
+    startAutoFromZones(true);
     return;
   }
   if (cmd == "AUTO_STOP") {
     mainState = ST_MANUAL;
+    demoMode = false;
+    demoStartMs = 0;
     hoverStop();
     wsSend("STATE,MANUAL");
     PiSerial.println("MODE:SEARCH");
@@ -779,6 +809,8 @@ void handlePhone(const String &raw) {
   if (cmd == "RESET") {
     hoverStop();
     mainState    = ST_MANUAL;
+    demoMode     = false;
+    demoStartMs  = 0;
     calibrated   = false;
     headingValid = false;
     haveAcceptedPose = false;
@@ -996,6 +1028,12 @@ void reportModeToPi(AutoSub sub) {
 }
 
 void handleAuto() {
+  if (demoMode && demoStartMs > 0 && millis() - demoStartMs > DEMO_TOTAL_TIMEOUT_MS) {
+    safetyStop("DEMO_TIMEOUT");
+    demoMode = false;
+    demoStartMs = 0;
+    return;
+  }
   if (!calibrated || !headingValid || !haveAcceptedPose) {
     safetyStop(!calibrated ? "NOT_CALIBRATED" : (!headingValid ? "HEADING_INVALID" : "UWB_STALE"));
     return;
@@ -1031,9 +1069,16 @@ void handleAuto() {
             sweepSpinning = false;
           } else {
             if (navStartMs == 0) navStartMs = millis();
-            if (millis() - navStartMs > NAV_STUCK_MS) {
+            unsigned long navLimitMs = demoMode ? DEMO_NAV_TIMEOUT_MS : NAV_STUCK_MS;
+            if (millis() - navStartMs > navLimitMs) {
+              if (demoMode) {
+                safetyStop("DEMO_NAV_TIMEOUT");
+                demoMode = false;
+                demoStartMs = 0;
+                break;
+              }
               // Stuck navigating вЂ” skip to nearest other zone
-              Serial.printf("[NAV] Stuck on zone %d > %lu ms, skipping\n", currentZoneIdx, NAV_STUCK_MS);
+              Serial.printf("[NAV] Stuck on zone %d > %lu ms, skipping\n", currentZoneIdx, navLimitMs);
               navStartMs = 0;
               currentZoneIdx = nearestZone(currentZoneIdx);
               break;
@@ -1043,6 +1088,16 @@ void handleAuto() {
         } else {
           // SS_SWEEP вЂ” РѕР±СЉРµР·Р¶Р°РµРј С‚РѕС‡РєРё СЃРµС‚РєРё 3Г—3
           if (sweepPtIdx >= sweepPtCount) {
+            if (demoMode) {
+              hoverStop();
+              mainState = ST_MANUAL;
+              demoMode = false;
+              demoStartMs = 0;
+              wsSend("DEMO_DONE");
+              wsSend("STATE,MANUAL");
+              PiSerial.println("MODE:SEARCH");
+              break;
+            }
             // Р’СЃСЏ СЃРµС‚РєР° РїСЂРѕР№РґРµРЅР° вЂ” РјСЏС‡РµР№ РЅРµС‚, РµРґРµРј РІ Р±Р»РёР¶Р°Р№С€СѓСЋ РґСЂСѓРіСѓСЋ Р·РѕРЅСѓ
             int next = nearestZone(currentZoneIdx);
             Serial.printf("[SWEEP] Zone %d done в†’ nearest zone %d\n",
@@ -1091,6 +1146,14 @@ void handleAuto() {
           PiSerial.println("BALLS_FULL");
           autoSub = AS_RETURNING;
           navStartMs = 0;
+        } else if (demoMode) {
+          hoverStop();
+          mainState = ST_MANUAL;
+          demoMode = false;
+          demoStartMs = 0;
+          wsSend("DEMO_DONE");
+          wsSend("STATE,MANUAL");
+          PiSerial.println("MODE:SEARCH");
         } else {
           // Р’РѕР·РІСЂР°С‰Р°РµРјСЃСЏ РІ С‚Сѓ Р¶Рµ Р·РѕРЅСѓ (sweepPtIdx РЅРµ СЃР±СЂР°СЃС‹РІР°РµС‚СЃСЏ вЂ” РїСЂРѕРґРѕР»Р¶Р°РµРј СЃРµС‚РєСѓ)
           autoSub   = AS_SEARCH;
