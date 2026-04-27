@@ -1,5 +1,4 @@
-﻿import 'dart:math' as math;
-import 'dart:typed_data';
+import 'dart:math' as math;
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
@@ -75,47 +74,35 @@ class _CourtZonesScreenState extends ConsumerState<CourtZonesScreen> {
   final Set<String> _selectedZoneIds = {};
 
   // Status indicators for left/right squares
-  bool _leftConnected = true; // Left shows connected (green)
-  bool _leftError = false;
-  bool _rightConnected = false; // Right shows disconnected (white)
-  bool _rightError = false;
+  final bool _leftConnected = true; // Left shows connected (green)
+  final bool _leftError = false;
+  final bool _rightConnected = false; // Right shows disconnected (white)
+  final bool _rightError = false;
 
   // Robot settings
   int _ballCount = 0;
   int _ballMaxCapacity = 60;
   int _speedMode = 1; // 0: slow, 1: medium, 2: fast
   bool _autoMode = true;
-  bool _isCollecting = false;
-  int _batteryLevel = 87;
-  bool _isCharging = false;
-  double _temperature = 32.5;
+  final int _batteryLevel = 87;
+  final bool _isCharging = false;
 
   // Device names
   String _robotName = 'TennisBot';
   String _beaconLName = 'РњР°СЏРє L';
   String _beaconRName = 'РњР°СЏРє R';
 
-  // Robot operation mode
-  RobotMode _robotMode = RobotMode.calibration;
-
   // Calibration state
-  bool _isCalibrated = false;
-  bool _calibrationStep1Done = false; // Position set
-  bool _calibrationStep2Done = false; // Direction set
-  bool _calibrationStep3Done = false; // Confirmed visualization
   bool _showCalibrationMode = false;
   bool _showDeliveryPointMode = false;
   bool _calibrationCompleted = false;
 
   // Beacons (UWB DWM1000)
-  bool _beacon1Connected = true;
-  bool _beacon2Connected = true;
-  double _beacon1Battery = 95;
-  double _beacon2Battery = 88;
+  final bool _beacon1Connected = true;
+  final bool _beacon2Connected = true;
 
   // Delivery point
   Offset _deliveryPoint = const Offset(0.5, 0.95); // Bottom center by default
-  bool _showDeliveryPoint = false;
   bool _deliveryPointSkipped = false;
   bool _mapOnlyMode = false;
 
@@ -465,11 +452,6 @@ class _CourtZonesScreenState extends ConsumerState<CourtZonesScreen> {
   void _onCalibrationPressed() {
     setState(() {
       _showCalibrationMode = !_showCalibrationMode;
-      if (_showCalibrationMode) {
-        _robotMode = RobotMode.calibration;
-      } else {
-        _robotMode = RobotMode.collection;
-      }
     });
   }
 
@@ -511,7 +493,7 @@ class _CourtZonesScreenState extends ConsumerState<CourtZonesScreen> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
             side: BorderSide(
-              color: enabled ? accent : Colors.white.withOpacity(0.14),
+              color: enabled ? accent : Colors.white.withValues(alpha: 0.14),
             ),
           ),
           elevation: 0,
@@ -532,8 +514,12 @@ class _CourtZonesScreenState extends ConsumerState<CourtZonesScreen> {
     // ESP32 heading: 0=+X direction (screen down), 90=+Y (screen right), atan2(dy,dx) convention.
     // Formula: heading = 180 - degrees(robotAngle), normalized to -180..180
     double headingDeg = 180.0 - _robotAngle * 180.0 / math.pi;
-    while (headingDeg > 180) headingDeg -= 360;
-    while (headingDeg < -180) headingDeg += 360;
+    while (headingDeg > 180) {
+      headingDeg -= 360;
+    }
+    while (headingDeg < -180) {
+      headingDeg += 360;
+    }
 
     wifiConnection.sendRaw(
       'CALIBRATE:${headingDeg.toStringAsFixed(1)}:${espX.toStringAsFixed(2)}:${espY.toStringAsFixed(2)}',
@@ -562,7 +548,7 @@ class _CourtZonesScreenState extends ConsumerState<CourtZonesScreen> {
         decoration: BoxDecoration(
           color: const Color(0xFF1A2229),
           borderRadius: BorderRadius.circular(24),
-          border: Border.all(color: Colors.white.withOpacity(0.08)),
+          border: Border.all(color: Colors.white.withValues(alpha: 0.08)),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -573,7 +559,7 @@ class _CourtZonesScreenState extends ConsumerState<CourtZonesScreen> {
               width: 40,
               height: 4,
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.2),
+                color: Colors.white.withValues(alpha: 0.2),
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
@@ -585,7 +571,7 @@ class _CourtZonesScreenState extends ConsumerState<CourtZonesScreen> {
                   Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: accent.withOpacity(0.15),
+                      color: accent.withValues(alpha: 0.15),
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Icon(Icons.help_outline, color: accent, size: 20),
@@ -666,9 +652,9 @@ class _CourtZonesScreenState extends ConsumerState<CourtZonesScreen> {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.04),
+        color: Colors.white.withValues(alpha: 0.04),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.white.withOpacity(0.06)),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.06)),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -697,7 +683,7 @@ class _CourtZonesScreenState extends ConsumerState<CourtZonesScreen> {
               text,
               style: TextStyle(
                 fontSize: 14,
-                color: Colors.white.withOpacity(0.9),
+                color: Colors.white.withValues(alpha: 0.9),
                 height: 1.4,
               ),
             ),
@@ -725,7 +711,7 @@ class _CourtZonesScreenState extends ConsumerState<CourtZonesScreen> {
           decoration: BoxDecoration(
             color: const Color(0xFF1A2229),
             borderRadius: BorderRadius.circular(24),
-            border: Border.all(color: Colors.white.withOpacity(0.08)),
+            border: Border.all(color: Colors.white.withValues(alpha: 0.08)),
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -736,7 +722,7 @@ class _CourtZonesScreenState extends ConsumerState<CourtZonesScreen> {
                 width: 40,
                 height: 4,
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.2),
+                  color: Colors.white.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
@@ -748,7 +734,7 @@ class _CourtZonesScreenState extends ConsumerState<CourtZonesScreen> {
                     Container(
                       padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
-                        color: accent.withOpacity(0.15),
+                        color: accent.withValues(alpha: 0.15),
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Icon(Icons.edit, color: accent, size: 20),
@@ -942,7 +928,6 @@ class _CourtZonesScreenState extends ConsumerState<CourtZonesScreen> {
                         _calibrationCompleted = true;
                         _deliveryPointSkipped = true;
                         _mapOnlyMode = true;
-                        _robotMode = RobotMode.collection;
                       });
                       _sendCalibration();
                     },
@@ -974,7 +959,6 @@ class _CourtZonesScreenState extends ConsumerState<CourtZonesScreen> {
                         _calibrationCompleted = true;
                         _deliveryPointSkipped = false;
                         _mapOnlyMode = true;
-                        _robotMode = RobotMode.collection;
                       });
                       _sendCalibration();
                     },
@@ -1325,7 +1309,7 @@ class _CourtZonesScreenState extends ConsumerState<CourtZonesScreen> {
                             Container(
                               padding: const EdgeInsets.all(8),
                               decoration: BoxDecoration(
-                                color: accent.withOpacity(0.15),
+                                color: accent.withValues(alpha: 0.15),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: const Icon(Icons.sports_tennis, color: accent, size: 24),
@@ -1358,7 +1342,7 @@ class _CourtZonesScreenState extends ConsumerState<CourtZonesScreen> {
                           Container(
                             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                             decoration: BoxDecoration(
-                              color: Colors.orange.withOpacity(0.2),
+                              color: Colors.orange.withValues(alpha: 0.2),
                               borderRadius: BorderRadius.circular(20),
                             ),
                             child: Row(
@@ -1381,7 +1365,7 @@ class _CourtZonesScreenState extends ConsumerState<CourtZonesScreen> {
                           Container(
                             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                             decoration: BoxDecoration(
-                              color: isAutoMode ? accent.withOpacity(0.2) : Colors.grey.withOpacity(0.1),
+                              color: isAutoMode ? accent.withValues(alpha: 0.2) : Colors.grey.withValues(alpha: 0.1),
                               borderRadius: BorderRadius.circular(20),
                             ),
                             child: Row(
@@ -1512,15 +1496,10 @@ class _CourtZonesScreenState extends ConsumerState<CourtZonesScreen> {
                                     _showDeliveryPointMode = false;
                                     _deliveryPointSkipped = false;
                                     _ballCount = 0;
-                                    _robotMode = RobotMode.calibration;
                                     _selectedZoneIds.clear();
                                     _deliveryPoint = const Offset(0.5, 0.95);
                                     _robot01 = const Offset(0.90, 0.92);
                                     _robotAngle = -math.pi / 2;
-                                    _isCalibrated = false;
-                                    _calibrationStep1Done = false;
-                                    _calibrationStep2Done = false;
-                                    _calibrationStep3Done = false;
                                     _calibrationCompleted = false;
                                   });
                                 },
@@ -1579,7 +1558,7 @@ class _CourtZonesScreenState extends ConsumerState<CourtZonesScreen> {
                                     wifiConnection.sendZones(centers);
                                     wifiConnection.sendRaw('AUTO_START');
                                   }
-                                  setState(() => _isCollecting = !isAutoMode);
+                                  setState(() {});
                                 },
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: isAutoMode ? const Color(0xFFFF6B6B) : accent,
@@ -1656,7 +1635,7 @@ class _CourtZonesScreenState extends ConsumerState<CourtZonesScreen> {
         padding: const EdgeInsets.fromLTRB(16, 10, 16, 14),
         decoration: BoxDecoration(
           color: panel,
-          border: Border(top: BorderSide(color: Colors.white.withOpacity(0.08))),
+          border: Border(top: BorderSide(color: Colors.white.withValues(alpha: 0.08))),
         ),
         child: Row(
           children: [
@@ -1800,7 +1779,7 @@ class _CourtZonesScreenState extends ConsumerState<CourtZonesScreen> {
                   borderRadius: BorderRadius.circular(8),
                   child: LinearProgressIndicator(
                     value: ballProgress.clamp(0.0, 1.0),
-                    backgroundColor: Colors.white.withOpacity(0.1),
+                    backgroundColor: Colors.white.withValues(alpha: 0.1),
                     valueColor: AlwaysStoppedAnimation<Color>(
                       ballProgress > 0.9 ? const Color(0xFFFF6B6B) : accent,
                     ),
@@ -1829,9 +1808,9 @@ class _CourtZonesScreenState extends ConsumerState<CourtZonesScreen> {
                 SliderTheme(
                   data: SliderThemeData(
                     activeTrackColor: accent,
-                    inactiveTrackColor: accent.withOpacity(0.2),
+                    inactiveTrackColor: accent.withValues(alpha: 0.2),
                     thumbColor: accent,
-                    overlayColor: accent.withOpacity(0.15),
+                    overlayColor: accent.withValues(alpha: 0.15),
                     trackHeight: 4,
                   ),
                   child: Slider(
@@ -1876,7 +1855,7 @@ class _CourtZonesScreenState extends ConsumerState<CourtZonesScreen> {
                                   decoration: BoxDecoration(
                                     color: const Color(0xFF1A2229),
                                     borderRadius: BorderRadius.circular(24),
-                                    border: Border.all(color: Colors.white.withOpacity(0.08)),
+                                    border: Border.all(color: Colors.white.withValues(alpha: 0.08)),
                                   ),
                                   child: Column(
                                     mainAxisSize: MainAxisSize.min,
@@ -1887,7 +1866,7 @@ class _CourtZonesScreenState extends ConsumerState<CourtZonesScreen> {
                                         width: 40,
                                         height: 4,
                                         decoration: BoxDecoration(
-                                          color: Colors.white.withOpacity(0.2),
+                                          color: Colors.white.withValues(alpha: 0.2),
                                           borderRadius: BorderRadius.circular(2),
                                         ),
                                       ),
@@ -1899,7 +1878,7 @@ class _CourtZonesScreenState extends ConsumerState<CourtZonesScreen> {
                                             Container(
                                               padding: const EdgeInsets.all(8),
                                               decoration: BoxDecoration(
-                                                color: const Color(0xFFFF6B6B).withOpacity(0.15),
+                                                color: const Color(0xFFFF6B6B).withValues(alpha: 0.15),
                                                 borderRadius: BorderRadius.circular(10),
                                               ),
                                               child: const Icon(Icons.warning_amber, color: Color(0xFFFF6B6B), size: 20),
@@ -1985,10 +1964,10 @@ class _CourtZonesScreenState extends ConsumerState<CourtZonesScreen> {
                           margin: EdgeInsets.only(left: i == 0 ? 0 : 6),
                           padding: const EdgeInsets.symmetric(vertical: 14),
                           decoration: BoxDecoration(
-                            color: isSelected ? accent.withOpacity(0.15) : Colors.transparent,
+                            color: isSelected ? accent.withValues(alpha: 0.15) : Colors.transparent,
                             borderRadius: BorderRadius.circular(10),
                             border: Border.all(
-                              color: isSelected ? accent : Colors.white.withOpacity(0.1),
+                              color: isSelected ? accent : Colors.white.withValues(alpha: 0.1),
                               width: isSelected ? 1.5 : 1,
                             ),
                           ),
@@ -2031,7 +2010,7 @@ class _CourtZonesScreenState extends ConsumerState<CourtZonesScreen> {
                 Container(
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: accent.withOpacity(0.15),
+                    color: accent.withValues(alpha: 0.15),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: const Icon(Icons.smart_toy, color: accent, size: 20),
@@ -2072,7 +2051,7 @@ class _CourtZonesScreenState extends ConsumerState<CourtZonesScreen> {
                 Container(
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: accent.withOpacity(0.15),
+                    color: accent.withValues(alpha: 0.15),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: const Icon(Icons.sensors, color: accent, size: 20),
@@ -2113,7 +2092,7 @@ class _CourtZonesScreenState extends ConsumerState<CourtZonesScreen> {
                 Container(
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: accent.withOpacity(0.15),
+                    color: accent.withValues(alpha: 0.15),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: const Icon(Icons.sensors, color: accent, size: 20),
@@ -2157,7 +2136,7 @@ class _CourtZonesScreenState extends ConsumerState<CourtZonesScreen> {
                   Container(
                     padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
-                      color: accent.withOpacity(0.15),
+                      color: accent.withValues(alpha: 0.15),
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Icon(Icons.language, color: accent, size: 22),
@@ -2174,7 +2153,7 @@ class _CourtZonesScreenState extends ConsumerState<CourtZonesScreen> {
                     decoration: BoxDecoration(
                       color: panel,
                       borderRadius: BorderRadius.circular(8),
-                      border: Border.all(color: Colors.white.withOpacity(0.1)),
+                      border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
                     ),
                     child: Text(
                       _lang == AppLang.ru ? 'RU в†’ EN' : 'EN в†’ RU',
@@ -2207,7 +2186,7 @@ class _CourtZonesScreenState extends ConsumerState<CourtZonesScreen> {
                 'v1.0.0',
                 style: TextStyle(
                   fontSize: 11,
-                  color: Colors.white.withOpacity(0.18),
+                  color: Colors.white.withValues(alpha: 0.18),
                   letterSpacing: 1.2,
                 ),
               ),
@@ -2230,7 +2209,7 @@ class _CourtZonesScreenState extends ConsumerState<CourtZonesScreen> {
       decoration: BoxDecoration(
         color: panel,
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: Colors.white.withOpacity(0.08)),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.08)),
       ),
       child: child,
     );
@@ -2240,50 +2219,6 @@ class _CourtZonesScreenState extends ConsumerState<CourtZonesScreen> {
     return Text(
       title,
       style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Color(0xFFA9B3BC)),
-    );
-  }
-
-  void _showDevPasswordDialog() {
-    final ctrl = TextEditingController();
-    showDialog(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        backgroundColor: panel,
-        title: const Text('', style: TextStyle(fontSize: 14)),
-        content: TextField(
-          controller: ctrl,
-          obscureText: true,
-          autofocus: true,
-          style: const TextStyle(color: Colors.white),
-          decoration: InputDecoration(
-            hintText: 'вЂўвЂўвЂўвЂў',
-            hintStyle: TextStyle(color: Colors.white.withOpacity(0.3)),
-            enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: accent.withOpacity(0.5))),
-            focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: accent)),
-          ),
-          onSubmitted: (v) {
-            Navigator.pop(ctx);
-            if (v == '1337') {
-              setState(() => _devModeEnabled = true);
-            }
-          },
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(ctx),
-            child: Text('вњ•', style: TextStyle(color: Colors.white.withOpacity(0.4))),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.pop(ctx);
-              if (ctrl.text == '1337') {
-                setState(() => _devModeEnabled = true);
-              }
-            },
-            child: Text('OK', style: TextStyle(color: accent)),
-          ),
-        ],
-      ),
     );
   }
 
@@ -2307,7 +2242,7 @@ class _CourtZonesScreenState extends ConsumerState<CourtZonesScreen> {
             TextButton(
               onPressed: () => setState(() => _devModeEnabled = false),
               style: TextButton.styleFrom(padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4), minimumSize: Size.zero),
-              child: Text('СЃРєСЂС‹С‚СЊ', style: TextStyle(color: Colors.white.withOpacity(0.35), fontSize: 11)),
+              child: Text('СЃРєСЂС‹С‚СЊ', style: TextStyle(color: Colors.white.withValues(alpha: 0.35), fontSize: 11)),
             ),
           ],
         ),
@@ -2318,7 +2253,7 @@ class _CourtZonesScreenState extends ConsumerState<CourtZonesScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('РўР•Р›Р•РњР•РўР РРЇ', style: TextStyle(fontSize: 10, fontWeight: FontWeight.w700, color: accent.withOpacity(0.7), letterSpacing: 1.2)),
+              Text('РўР•Р›Р•РњР•РўР РРЇ', style: TextStyle(fontSize: 10, fontWeight: FontWeight.w700, color: accent.withValues(alpha: 0.7), letterSpacing: 1.2)),
               const SizedBox(height: 10),
               _devRow('РЎС‚Р°С‚СѓСЃ', wifiState.isConnected ? 'ONLINE' : 'OFFLINE',
                   wifiState.isConnected ? accent : const Color(0xFFFF6B6B)),
@@ -2349,7 +2284,7 @@ class _CourtZonesScreenState extends ConsumerState<CourtZonesScreen> {
                 value: _showCoordinates,
                 onChanged: (v) => setState(() => _showCoordinates = v),
                 title: const Text('РљРѕРѕСЂРґРёРЅР°С‚С‹ РЅР° РєР°СЂС‚Рµ', style: TextStyle(fontSize: 13)),
-                activeColor: accent,
+                activeThumbColor: accent,
                 contentPadding: EdgeInsets.zero,
                 dense: true,
               ),
@@ -2357,7 +2292,7 @@ class _CourtZonesScreenState extends ConsumerState<CourtZonesScreen> {
                 value: _showTrail,
                 onChanged: (v) => setState(() => _showTrail = v),
                 title: const Text('РЎР»РµРґ РїРѕР·РёС†РёРё', style: TextStyle(fontSize: 13)),
-                activeColor: accent,
+                activeThumbColor: accent,
                 contentPadding: EdgeInsets.zero,
                 dense: true,
               ),
@@ -2365,7 +2300,7 @@ class _CourtZonesScreenState extends ConsumerState<CourtZonesScreen> {
                 value: ref.watch(wifiPingCheckProvider),
                 onChanged: (v) => ref.read(wifiPingCheckProvider.notifier).setEnabled(v),
                 title: const Text('РџСЂРѕРІРµСЂРєР° Wi-Fi РїРµСЂРµРґ РїРѕРґРєР»СЋС‡РµРЅРёРµРј', style: TextStyle(fontSize: 13)),
-                activeColor: accent,
+                activeThumbColor: accent,
                 contentPadding: EdgeInsets.zero,
                 dense: true,
               ),
@@ -2379,7 +2314,7 @@ class _CourtZonesScreenState extends ConsumerState<CourtZonesScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('РљРћРњРђРќР”Рђ', style: TextStyle(fontSize: 10, fontWeight: FontWeight.w700, color: accent.withOpacity(0.7), letterSpacing: 1.2)),
+              Text('РљРћРњРђРќР”Рђ', style: TextStyle(fontSize: 10, fontWeight: FontWeight.w700, color: accent.withValues(alpha: 0.7), letterSpacing: 1.2)),
               const SizedBox(height: 8),
               Row(
                 children: [
@@ -2389,13 +2324,13 @@ class _CourtZonesScreenState extends ConsumerState<CourtZonesScreen> {
                       style: const TextStyle(color: Colors.white, fontSize: 13, fontFamily: 'monospace'),
                       decoration: InputDecoration(
                         hintText: 'AUTO_START, M,50,50, ...',
-                        hintStyle: TextStyle(color: Colors.white.withOpacity(0.25), fontSize: 12),
+                        hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.25), fontSize: 12),
                         enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.white.withOpacity(0.1)),
+                          borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.1)),
                           borderRadius: BorderRadius.circular(8),
                         ),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: accent.withOpacity(0.6)),
+                          borderSide: BorderSide(color: accent.withValues(alpha: 0.6)),
                           borderRadius: BorderRadius.circular(8),
                         ),
                         contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
@@ -2441,12 +2376,12 @@ class _CourtZonesScreenState extends ConsumerState<CourtZonesScreen> {
             children: [
               Row(
                 children: [
-                  Text('РўР•Р РњРРќРђР›', style: TextStyle(fontSize: 10, fontWeight: FontWeight.w700, color: accent.withOpacity(0.7), letterSpacing: 1.2)),
+                  Text('РўР•Р РњРРќРђР›', style: TextStyle(fontSize: 10, fontWeight: FontWeight.w700, color: accent.withValues(alpha: 0.7), letterSpacing: 1.2)),
                   const Spacer(),
                   TextButton(
                     onPressed: () => ref.read(terminalProvider.notifier).clear(),
                     style: TextButton.styleFrom(padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2), minimumSize: Size.zero),
-                    child: Text('РѕС‡РёСЃС‚РёС‚СЊ', style: TextStyle(color: accent.withOpacity(0.7), fontSize: 11)),
+                    child: Text('РѕС‡РёСЃС‚РёС‚СЊ', style: TextStyle(color: accent.withValues(alpha: 0.7), fontSize: 11)),
                   ),
                 ],
               ),
@@ -2481,7 +2416,7 @@ class _CourtZonesScreenState extends ConsumerState<CourtZonesScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Р‘Р«РЎРўР Р«Р• РљРћРњРђРќР”Р«', style: TextStyle(fontSize: 10, fontWeight: FontWeight.w700, color: accent.withOpacity(0.7), letterSpacing: 1.2)),
+              Text('Р‘Р«РЎРўР Р«Р• РљРћРњРђРќР”Р«', style: TextStyle(fontSize: 10, fontWeight: FontWeight.w700, color: accent.withValues(alpha: 0.7), letterSpacing: 1.2)),
               const SizedBox(height: 10),
               Wrap(
                 spacing: 8,
@@ -2511,7 +2446,7 @@ class _CourtZonesScreenState extends ConsumerState<CourtZonesScreen> {
       padding: const EdgeInsets.symmetric(vertical: 3),
       child: Row(
         children: [
-          Text(label, style: TextStyle(fontSize: 12, color: Colors.white.withOpacity(0.5))),
+          Text(label, style: TextStyle(fontSize: 12, color: Colors.white.withValues(alpha: 0.5))),
           const Spacer(),
           Text(value, style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: valueColor, fontFamily: 'monospace')),
         ],
@@ -2525,9 +2460,9 @@ class _CourtZonesScreenState extends ConsumerState<CourtZonesScreen> {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
         decoration: BoxDecoration(
-          color: accent.withOpacity(0.12),
+          color: accent.withValues(alpha: 0.12),
           borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: accent.withOpacity(0.3)),
+          border: Border.all(color: accent.withValues(alpha: 0.3)),
         ),
         child: Text(label, style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: accent)),
       ),
@@ -2538,9 +2473,9 @@ class _CourtZonesScreenState extends ConsumerState<CourtZonesScreen> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+        color: color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: color.withOpacity(0.3)),
+        border: Border.all(color: color.withValues(alpha: 0.3)),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -2553,96 +2488,6 @@ class _CourtZonesScreenState extends ConsumerState<CourtZonesScreen> {
           ),
         ],
       ),
-    );
-  }
-
-  Widget _buildOutlinedButton({required IconData icon, required String label, required VoidCallback onTap}) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 10),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: Colors.white.withOpacity(0.15)),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(icon, size: 16, color: accent),
-            const SizedBox(width: 4),
-            Text(
-              label,
-              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: accent),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildModeButton({
-    required IconData icon,
-    required String label,
-    required bool isSelected,
-    required VoidCallback onTap,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 12),
-        decoration: BoxDecoration(
-          color: isSelected ? accent.withOpacity(0.15) : Colors.transparent,
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(
-            color: isSelected ? accent : Colors.white.withOpacity(0.1),
-            width: isSelected ? 1.5 : 1,
-          ),
-        ),
-        child: Column(
-          children: [
-            Icon(icon, size: 20, color: isSelected ? accent : const Color(0xFFA9B3BC)),
-            const SizedBox(height: 4),
-            Text(
-              label,
-              style: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w600,
-                color: isSelected ? accent : const Color(0xFFA9B3BC),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildSensorStatus({
-    required String label,
-    required bool connected,
-    required bool error,
-    required ValueChanged<bool> onToggle,
-    required ValueChanged<bool> onError,
-  }) {
-    return Column(
-      children: [
-        Text(label, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600)),
-        const SizedBox(height: 6),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              connected ? Icons.link : Icons.link_off,
-              size: 16,
-              color: connected ? accent : const Color(0xFFA9B3BC),
-            ),
-            const SizedBox(width: 4),
-            Text(
-              connected ? _tr('РџРѕРґРєР».', 'Conn.') : _tr('РћС‚РєР».', 'Disc.'),
-              style: TextStyle(fontSize: 11, color: connected ? accent : const Color(0xFFA9B3BC)),
-            ),
-          ],
-        ),
-      ],
     );
   }
 
@@ -2842,7 +2687,7 @@ class _CoolJoystick extends StatelessWidget {
                   shape: BoxShape.circle,
                   boxShadow: [
                     BoxShadow(
-                      color: accent.withOpacity(active ? 0.22 : 0.10),
+                      color: accent.withValues(alpha: active ? 0.22 : 0.10),
                       blurRadius: active ? 26 : 16,
                       spreadRadius: active ? 2 : 0,
                     ),
@@ -2857,13 +2702,13 @@ class _CoolJoystick extends StatelessWidget {
                 shape: BoxShape.circle,
                 gradient: RadialGradient(
                   colors: [
-                    Colors.white.withOpacity(0.06),
-                    Colors.white.withOpacity(0.02),
-                    const Color(0xFF0B0F12).withOpacity(0.25),
+                    Colors.white.withValues(alpha: 0.06),
+                    Colors.white.withValues(alpha: 0.02),
+                    const Color(0xFF0B0F12).withValues(alpha: 0.25),
                   ],
                   stops: const [0.0, 0.55, 1.0],
                 ),
-                border: Border.all(color: Colors.white.withOpacity(0.10)),
+                border: Border.all(color: Colors.white.withValues(alpha: 0.10)),
               ),
             ),
             Opacity(
@@ -2873,7 +2718,7 @@ class _CoolJoystick extends StatelessWidget {
                 height: _size - 26,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  border: Border.all(color: accent.withOpacity(0.22), width: 1),
+                  border: Border.all(color: accent.withValues(alpha: 0.22), width: 1),
                 ),
               ),
             ),
@@ -2891,16 +2736,16 @@ class _CoolJoystick extends StatelessWidget {
                       shape: BoxShape.circle,
                       gradient: RadialGradient(
                         colors: [
-                          accent.withOpacity(active ? 0.55 : 0.40),
-                          accent.withOpacity(active ? 0.25 : 0.18),
-                          Colors.black.withOpacity(0.40),
+                          accent.withValues(alpha: active ? 0.55 : 0.40),
+                          accent.withValues(alpha: active ? 0.25 : 0.18),
+                          Colors.black.withValues(alpha: 0.40),
                         ],
                         stops: const [0.0, 0.62, 1.0],
                       ),
-                      border: Border.all(color: accent.withOpacity(active ? 0.95 : 0.75), width: 1.3),
+                      border: Border.all(color: accent.withValues(alpha: active ? 0.95 : 0.75), width: 1.3),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.55),
+                          color: Colors.black.withValues(alpha: 0.55),
                           blurRadius: 14,
                           offset: const Offset(0, 8),
                         ),
@@ -2912,9 +2757,9 @@ class _CoolJoystick extends StatelessWidget {
                         height: 10,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: Colors.white.withOpacity(0.9),
+                          color: Colors.white.withValues(alpha: 0.9),
                           boxShadow: [
-                            BoxShadow(color: accent.withOpacity(0.35), blurRadius: 10),
+                            BoxShadow(color: accent.withValues(alpha: 0.35), blurRadius: 10),
                           ],
                         ),
                       ),

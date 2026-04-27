@@ -159,6 +159,7 @@ float dist2f(Point2f a, Point2f b);
 bool trilaterateCandidates(float rL, float rR, Point2f &a, Point2f &b);
 bool acceptPose(Point2f p, unsigned long now);
 void reportModeToPi(AutoSub sub);
+void seedSafetyTestAutoState();
 
 MainState mainState = ST_MANUAL;
 AutoSub   autoSub   = AS_SEARCH;
@@ -423,6 +424,28 @@ void safetyStop(const char *reason, bool invalidatePose) {
   }
 }
 
+void seedSafetyTestAutoState() {
+  hoverStop();
+  mainState = ST_AUTO;
+  autoSub = AS_TRACKING;
+  calibrated = true;
+  headingValid = true;
+  haveAcceptedPose = true;
+  uwbX = WORK_X * 0.5f;
+  uwbY = WORK_Y * 0.5f;
+  lastPoseMs = millis();
+  Point2f pose = {uwbX, uwbY};
+  Point2f anchorL = {ANCHOR_L_X, ANCHOR_L_Y};
+  Point2f anchorR = {ANCHOR_R_X, ANCHOR_R_Y};
+  rangeL = dist2f(pose, anchorL);
+  rangeR = dist2f(pose, anchorR);
+  lastRangeL = millis();
+  lastRangeR = millis();
+  zoneCount = 0;
+  sweepSpinning = false;
+  wsSend("TEST,AUTO_STATE_SEEDED");
+}
+
 // Returns the two possible intersections from ranges to diagonal working-area anchors.
 bool trilaterateCandidates(float rL, float rR, Point2f &a, Point2f &b) {
   if (rL <= 0.0f || rR <= 0.0f || ANCHOR_DIST < 0.01f) return false;
@@ -556,6 +579,41 @@ void handlePhone(const String &raw) {
   if (cmd == "ATTACHMENT_ON") { digitalWrite(RELAY_PIN, HIGH); return; }
   if (cmd == "ATTACHMENT_OFF"){ digitalWrite(RELAY_PIN, LOW);  return; }
   if (cmd == "MOUNT_ON" || cmd == "MOUNT_OFF") return;
+
+  // Non-driving safety injection commands for bench tests.
+  // They seed AUTO in AS_TRACKING with motors stopped, then trigger a specific
+  // safety path so STOP reasons can be verified from the app/serial log.
+  if (cmd == "TEST_STOP:UWB_LOST") {
+    seedSafetyTestAutoState();
+    safetyStop("UWB_LOST");
+    return;
+  }
+  if (cmd == "TEST_STOP:UWB_STALE") {
+    seedSafetyTestAutoState();
+    lastRangeL = millis() - ANCHOR_TIMEOUT_MS - 100UL;
+    lastRangeR = millis() - ANCHOR_TIMEOUT_MS - 100UL;
+    safetyStop("UWB_STALE");
+    return;
+  }
+  if (cmd == "TEST_STOP:UWB_BRANCH") {
+    seedSafetyTestAutoState();
+    uwbRejects = MAX_UWB_REJECTS;
+    safetyStop("UWB_BRANCH", true);
+    return;
+  }
+  if (cmd == "TEST_STOP:OUT_OF_BOUNDS") {
+    seedSafetyTestAutoState();
+    uwbX = -0.1f;
+    safetyStop("OUT_OF_BOUNDS", true);
+    return;
+  }
+  if (cmd == "TEST_STOP:PI_TIMEOUT") {
+    seedSafetyTestAutoState();
+    lastPiMsgMs = millis() - PI_UART_TIMEOUT_MS - 100UL;
+    wsSend("WARN,PI_TIMEOUT");
+    safetyStop("PI_TIMEOUT");
+    return;
+  }
 
   if (cmd.startsWith("M,")) {
     int c = cmd.indexOf(',', 2);

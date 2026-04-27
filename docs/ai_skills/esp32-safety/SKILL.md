@@ -53,3 +53,17 @@ Use conservative values first:
 - Boundary slow margin: tune after measuring robot stopping distance.
 
 All thresholds must be tuned from `TEST_LOG.md`.
+
+## Bench Safety Injection Commands
+
+The main firmware supports non-driving WebSocket test commands for bench checks.
+Each command seeds AUTO in `AS_TRACKING`, stops motors, and emits the expected app-visible warning/error:
+
+- `TEST_STOP:UWB_LOST`
+- `TEST_STOP:UWB_STALE`
+- `TEST_STOP:UWB_BRANCH`
+- `TEST_STOP:OUT_OF_BOUNDS`
+- `TEST_STOP:PI_TIMEOUT`
+
+Use these before physical AUTO tests to verify STOP reasons in the app terminal and ESP32 serial log.
+Record results in `TEST_LOG.md`.

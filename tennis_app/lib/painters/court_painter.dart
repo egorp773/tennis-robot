@@ -88,14 +88,14 @@ class CourtPainter extends CustomPainter {
 
     // Border around robot working area.
     final borderPaint = Paint()
-      ..color = accent.withOpacity(0.3)
+      ..color = accent.withValues(alpha: 0.3)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2;
 
     canvas.drawRect(playable, borderPaint);
 
     final line = Paint()
-      ..color = accent.withOpacity(0.75)
+      ..color = accent.withValues(alpha: 0.75)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2;
 
@@ -133,14 +133,14 @@ class CourtPainter extends CustomPainter {
     final anchorLPx = playable.topLeft;
     final anchorRPx = playable.bottomRight;
 
-    Color anchorLColor = Colors.white.withOpacity(0.5);
+    Color anchorLColor = Colors.white.withValues(alpha: 0.5);
     if (leftError) {
       anchorLColor = Colors.red;
     } else if (leftConnected) {
       anchorLColor = accent;
     }
 
-    Color anchorRColor = Colors.white.withOpacity(0.5);
+    Color anchorRColor = Colors.white.withValues(alpha: 0.5);
     if (rightError) {
       anchorRColor = Colors.red;
     } else if (rightConnected) {
@@ -161,7 +161,7 @@ class CourtPainter extends CustomPainter {
       canvas.drawPath(
         diamond,
         Paint()
-          ..color = Colors.black.withOpacity(0.4)
+          ..color = Colors.black.withValues(alpha: 0.4)
           ..style = PaintingStyle.stroke
           ..strokeWidth = 1.5,
       );
@@ -184,13 +184,13 @@ class CourtPainter extends CustomPainter {
       final enabled = selectedZoneIds.contains(z.id);
 
       if (enabled) {
-        canvas.drawRect(z.rect, Paint()..color = accent.withOpacity(0.14));
+        canvas.drawRect(z.rect, Paint()..color = accent.withValues(alpha: 0.14));
       }
 
       canvas.drawRect(
         z.rect,
         Paint()
-          ..color = enabled ? accent.withOpacity(0.45) : accent.withOpacity(0.08)
+          ..color = enabled ? accent.withValues(alpha: 0.45) : accent.withValues(alpha: 0.08)
           ..style = PaintingStyle.stroke
           ..strokeWidth = 2,
       );
@@ -204,7 +204,7 @@ class CourtPainter extends CustomPainter {
         playable.top + t.dy * playable.height,
       );
       final alpha = ((i + 1) / positionTrail.length * 0.6).clamp(0.0, 1.0);
-      canvas.drawCircle(tPx, 4, Paint()..color = accent.withOpacity(alpha));
+      canvas.drawCircle(tPx, 4, Paint()..color = accent.withValues(alpha: alpha));
     }
 
     // Robot
@@ -219,14 +219,14 @@ class CourtPainter extends CustomPainter {
         robotPx,
         robotRadius * 1.3,
         Paint()
-          ..color = accent.withOpacity(0.15)
+          ..color = accent.withValues(alpha: 0.15)
           ..style = PaintingStyle.fill,
       );
       canvas.drawCircle(
         robotPx,
         robotRadius * 1.3,
         Paint()
-          ..color = accent.withOpacity(0.5)
+          ..color = accent.withValues(alpha: 0.5)
           ..style = PaintingStyle.stroke
           ..strokeWidth = 2,
       );
@@ -267,12 +267,12 @@ class CourtPainter extends CustomPainter {
         deliveryPx,
         18,
         Paint()
-          ..color = accent.withOpacity(0.3)
+          ..color = accent.withValues(alpha: 0.3)
           ..style = PaintingStyle.stroke
           ..strokeWidth = 3,
       );
 
-      canvas.drawCircle(deliveryPx, 10, Paint()..color = accent.withOpacity(0.8));
+      canvas.drawCircle(deliveryPx, 10, Paint()..color = accent.withValues(alpha: 0.8));
       canvas.drawCircle(deliveryPx, 4, Paint()..color = const Color(0xFF0B0F12));
 
       final pinPath = Path();
@@ -296,7 +296,7 @@ class CourtPainter extends CustomPainter {
         Offset.zero,
         circleRadius,
         Paint()
-          ..color = accent.withOpacity(0.3)
+          ..color = accent.withValues(alpha: 0.3)
           ..style = PaintingStyle.stroke
           ..strokeWidth = 3,
       );
@@ -329,11 +329,11 @@ class CourtPainter extends CustomPainter {
         ..lineTo(p3.dx, p3.dy)
         ..close();
 
-      canvas.drawPath(tri, Paint()..color = accent.withOpacity(0.95));
+      canvas.drawPath(tri, Paint()..color = accent.withValues(alpha: 0.95));
       canvas.drawPath(
         tri,
         Paint()
-          ..color = Colors.black.withOpacity(0.35)
+          ..color = Colors.black.withValues(alpha: 0.35)
           ..style = PaintingStyle.stroke
           ..strokeWidth = 2,
       );
@@ -346,19 +346,19 @@ class CourtPainter extends CustomPainter {
         Offset.zero,
         handlePos,
         Paint()
-          ..color = accent.withOpacity(isRotating ? 0.9 : 0.5)
+          ..color = accent.withValues(alpha: isRotating ? 0.9 : 0.5)
           ..strokeWidth = isRotating ? 2.5 : 1.5,
       );
       canvas.drawCircle(
         handlePos,
         handleRadius,
-        Paint()..color = Colors.white.withOpacity(isRotating ? 1.0 : 0.85),
+        Paint()..color = Colors.white.withValues(alpha: isRotating ? 1.0 : 0.85),
       );
       canvas.drawCircle(
         handlePos,
         handleRadius,
         Paint()
-          ..color = accent.withOpacity(isRotating ? 1.0 : 0.7)
+          ..color = accent.withValues(alpha: isRotating ? 1.0 : 0.7)
           ..style = PaintingStyle.stroke
           ..strokeWidth = isRotating ? 3 : 2,
       );

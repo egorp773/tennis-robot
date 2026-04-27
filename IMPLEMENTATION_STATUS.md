@@ -13,7 +13,7 @@ Current state:
 - ESP32, Flutter map/calibration, UWB anchor comments, and calibration scripts are being aligned around the robot working area model.
 - UWB now needs real calibration data before any unrestricted autonomous test.
 - Camera/YOLO still must be tested on the real court after navigation safety is verified.
-- Local Flutter command execution recovered after deleting stale Flutter lock files and clearing proxy variables for the terminal session. `flutter pub get` works; `flutter analyze lib` runs but currently reports existing lint/info issues.
+- Local Flutter command execution recovered after deleting stale Flutter lock files and clearing proxy variables for the terminal session. `flutter pub get` works and `flutter analyze lib` is clean.
 
 Core architecture to preserve:
 
@@ -69,10 +69,13 @@ Core architecture to preserve:
 - Fixed `.ino` compile issues caused by Arduino auto-generated prototypes around `Point2f`/`AutoSub`.
 - Verified ESP32 compile for `tennis_robot`, `tennis_robot_cal`, `manual_control`, `collector_test`, `camera_only_collection`, `anchor_L`, and `anchor_R`.
 - Verified `flutter pub get` completes after clearing stale environment/lock issues.
+- Cleaned Flutter analyzer issues in `court_painter.dart` and `court_zones_screen.dart`; `flutter analyze lib` now reports no issues.
+- Added non-driving ESP32 bench safety injection commands: `TEST_STOP:UWB_LOST`, `TEST_STOP:UWB_STALE`, `TEST_STOP:UWB_BRANCH`, `TEST_STOP:OUT_OF_BOUNDS`, and `TEST_STOP:PI_TIMEOUT`.
+- Documented safety injection commands in `docs/ai_skills/esp32-safety/SKILL.md`.
 
 ## Current Verification Status
 
-Verification is no longer blocked by a hung Flutter process, but Flutter static analysis is not clean yet.
+Verification is no longer blocked by a hung Flutter process, and Flutter static analysis is clean.
 
 Recovered items:
 
@@ -81,11 +84,12 @@ Recovered items:
   - `C:\src\flutter\bin\cache\lockfile`
 - Ran Flutter with cleared proxy variables for the current terminal process.
 - `flutter pub get` completed.
+- `flutter analyze lib` completed with no issues.
 - ESP32 firmware variants listed above compile.
+- Full ESP32 firmware compiles after adding bench safety injection commands.
 
 Remaining issues:
 
-- `flutter analyze lib` runs but reports 114 issues, mostly existing `withOpacity` deprecations plus unused private fields/methods in `court_zones_screen.dart`.
 - No physical UWB, Pi, camera, or AUTO safety tests have been logged yet.
 
 ## Next Implementation Step
@@ -99,11 +103,9 @@ Reason:
 
 Concrete next tasks:
 
-1. Clean or triage Flutter analyzer issues in `court_painter.dart` and `court_zones_screen.dart`.
-2. Add or document a safety-injection firmware mode for stale UWB, impossible jump, out-of-bounds pose, Pi timeout, and STOP reason checks.
-3. Add one-zone conservative demo/test mode or confirm existing AUTO can be constrained from the app.
-4. Run staged non-moving safety tests before any real movement.
-5. Log all physical/integration test results in `TEST_LOG.md`.
+1. Add one-zone conservative demo/test mode or confirm existing AUTO can be constrained from the app.
+2. Run staged non-moving safety injection tests before any real movement.
+3. Log all physical/integration test results in `TEST_LOG.md`.
 
 ## How Phase 1 Should Be Implemented
 
